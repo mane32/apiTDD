@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Post;
+use App\Models\Post;
 use App\Http\Requests\Post as PostRequests;
 
 class PostController extends Controller
@@ -20,7 +20,9 @@ $this->post = $post;
      */
     public function index()
     {
-        //
+        return response()->json(
+            $this->post->paginate()
+        );
     }
 
     /**
@@ -43,7 +45,7 @@ $this->post = $post;
      */
     public function show(Post $post)
     {
-        //
+        return response()->json($post);
     }
 
     /**
@@ -53,9 +55,10 @@ $this->post = $post;
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(PostRequest $request, Post $post)
     {
-        //
+        $post->update($request->all());
+        return response()->json($post);
     }
 
     /**
@@ -66,6 +69,8 @@ $this->post = $post;
      */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+
+        return response()->json(null, 204);
     }
 }
